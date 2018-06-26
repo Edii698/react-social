@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const passport = require('passport');
 
 const users = require("./routes/api/users");
 const profile = require("./routes/api/profile");
@@ -17,7 +18,11 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/reactsocial")
 .then(() => console.log("mongoDB connected"))
 .catch(err => console.log(err));
 
-app.get('/', (req, res) => res.send('Hello'));
+//Passport middleware
+app.use(passport.initialize());
+
+// Passport Config
+require('./config/passport')(passport);
 
 //Use routes
 app.use("/api/users", users);
